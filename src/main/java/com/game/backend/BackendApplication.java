@@ -32,13 +32,18 @@ public class BackendApplication {
 		String password = props.getProperty("spring.datasource.password");
 
 		try {
+			// Explicitly load the MySQL JDBC driver class
+			Class.forName("com.mysql.cj.jdbc.Driver");
+
 			Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 			System.out.println("Successfully connected to the database!");
 			connection.close();
 		} catch (SQLException e) {
 			System.err.println("Failed to connect to the database.");
 			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			System.err.println("MySQL JDBC Driver not found. Include it in your library path!");
+			e.printStackTrace();
 		}
 	}
-
 }
