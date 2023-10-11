@@ -6,18 +6,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.border.LineBorder;
 
-public class LoginScreen extends JFrame {
+public class RegistrationPage extends JFrame {
     private final JTextField usernameField;
     private final JPasswordField passwordField;
-    private final ImageIcon backgroundImage;
+    private final JPasswordField confirmPasswordField;
 
-    public LoginScreen() {
-        setTitle("Wizardventure!");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public RegistrationPage() {
+        setTitle("Registration Page");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close only this window, not the entire application
         setSize(800, 600); // Set the size of the frame
 
         // Load the background image using the class loader
-        backgroundImage = new ImageIcon(getClass().getClassLoader().getResource("login_pic.jpg"));
+        ImageIcon backgroundImage = new ImageIcon(getClass().getClassLoader().getResource("login_pic.jpg"));
 
         JPanel contentPane = new JPanel() {
             @Override
@@ -38,7 +38,7 @@ public class LoginScreen extends JFrame {
         Color borderColor = Color.decode("#F1E9D2");
         Color buttonBackgroundColor = Color.decode("#3E2723");
 
-        //Username
+        // Username
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setForeground(labelTextColor); // Set text color
         usernameField = new JTextField(15); // Set the preferred width of the text field
@@ -46,7 +46,7 @@ public class LoginScreen extends JFrame {
         usernameField.setForeground(labelTextColor); // Set text color
         usernameField.setBorder(new LineBorder(borderColor, 1)); // Set border color
 
-        //Password
+        // Password
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setForeground(labelTextColor); // Set text color
         passwordField = new JPasswordField(15); // Set the preferred width of the password field
@@ -54,33 +54,33 @@ public class LoginScreen extends JFrame {
         passwordField.setForeground(labelTextColor); // Set text color
         passwordField.setBorder(new LineBorder(borderColor, 1)); // Set border color
 
-        //Login button
-        JButton loginButton = new JButton("Login");
-        loginButton.setOpaque(true); // Ensure the button is opaque to show the background color
-        loginButton.setBackground(buttonBackgroundColor); // Set background color
-        loginButton.setForeground(labelTextColor); // Set text color
+        // Confirm Password
+        JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
+        confirmPasswordLabel.setForeground(labelTextColor); // Set text color
+        confirmPasswordField = new JPasswordField(15); // Set the preferred width of the password field
+        confirmPasswordField.setOpaque(false); // Make the password field transparent
+        confirmPasswordField.setForeground(labelTextColor); // Set text color
+        confirmPasswordField.setBorder(new LineBorder(borderColor, 1)); // Set border color
 
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Handle login button click event here
-                String username = usernameField.getText();
-                char[] password = passwordField.getPassword();
-                // Perform login authentication logic
-            }
-        });
-
-        //Register
-        JButton registerButton = new JButton ("Register");
-        registerButton.setOpaque(true);
-        registerButton.setBackground(buttonBackgroundColor);
-        registerButton.setForeground(labelTextColor);
+        // Register button
+        JButton registerButton = new JButton("Make Account");
+        registerButton.setOpaque(true); // Ensure the button is opaque to show the background color
+        registerButton.setBackground(buttonBackgroundColor); // Set background color
+        registerButton.setForeground(labelTextColor); // Set text color
 
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Open the registration page when the "Register" button is clicked
-                new RegistrationPage();
+                String newUsername = usernameField.getText();
+                char[] newPassword = passwordField.getPassword();
+                char[] confirmPassword = confirmPasswordField.getPassword();
+
+                // TODO: Handle registration logic, e.g., store data in a database
+                // For now, let's assume registration is successful
+                System.out.println("Account created for username: " + newUsername);
+
+                // Close the registration window after successful registration
+                dispose();
             }
         });
 
@@ -106,25 +106,19 @@ public class LoginScreen extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        gbc.gridwidth = 1; // Make the button span across two columns
-        contentPane.add(loginButton, gbc);
+        contentPane.add(confirmPasswordLabel, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 2;
-        gbc.gridwidth = 1; // Make the button span across two columns
+        contentPane.add(confirmPasswordField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2; // Make the button span across two columns
         contentPane.add(registerButton, gbc);
 
         setContentPane(contentPane);
         setVisible(true);
     }
-
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new LoginScreen();
-            }
-        });
-    }
 }
+
